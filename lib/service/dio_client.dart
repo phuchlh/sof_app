@@ -1,11 +1,14 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class DioClient {
   final Dio _dio;
 
+  final String SOF_API_ENDPOINT = dotenv.env['SOF_API_ENDPOINT']!;
+
   DioClient() : _dio = Dio() {
-    _dio.options.baseUrl = 'YOUR_BASE_URL'; // Replace with your base URL
+    _dio.options.baseUrl = SOF_API_ENDPOINT; // Replace with your base URL
     _dio.options.connectTimeout = const Duration(seconds: 10);
     _dio.options.receiveTimeout = const Duration(seconds: 10);
 
