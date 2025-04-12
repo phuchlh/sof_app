@@ -1,9 +1,16 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:sof_app/models/user_model.dart';
 import 'package:sof_app/service/user_service.dart';
+import 'package:intl/intl.dart';
 
 class UserPageController extends GetxController {
   final UserService _userService = UserService();
+  final _storage = GetStorage();
+  static const String _bookmarkKey = 'bookmarked_users';
+
+  final scrollController = ScrollController();
 
   // Observable variables
   final RxList<UserModel> users = <UserModel>[].obs;
@@ -11,11 +18,63 @@ class UserPageController extends GetxController {
   final RxBool hasMore = true.obs;
   final RxInt currentPage = 1.obs;
   final int pageSize = 10;
+  final RxList<int> bookmarkedUserIds = <int>[].obs;
+  final RxInt selectedToggleIndex = 0.obs;
+  final RxBool showBookmarkedOnly = false.obs;
 
   @override
   void onInit() {
+    _loadBookmarkedUsers();
     loadUsers();
+    scrollController.addListener(_onScroll);
     super.onInit();
+  }
+
+  void _onScroll() {
+    final position = scrollController.position;
+    if (position.pixels >= position.maxScrollExtent - 200) {
+      if (!isLoading.value && hasMore.value) {
+        print('Loading more users...');
+        loadUsers();
+      }
+    }
+  }
+
+  void _loadBookmarkedUsers() {
+    final List<dynamic> storedIds =
+        _storage.read<List<dynamic>>(_bookmarkKey) ?? [];
+    bookmarkedUserIds.value = storedIds.map((id) => id as int).toList();
+  }
+
+  void _saveBookmarkedUsers() {
+    _storage.write(_bookmarkKey, bookmarkedUserIds);
+  }
+
+  bool isBookmarked(int userId) {
+    return bookmarkedUserIds.contains(userId);
+  }
+
+  void toggleBookmark(UserModel user) {
+    if (isBookmarked(user.userId ?? 0)) {
+      bookmarkedUserIds.remove(user.userId);
+    } else {
+      bookmarkedUserIds.add(user.userId ?? 0);
+    }
+    _saveBookmarkedUsers();
+  }
+
+  void toggleFilterByIndex(int index) {
+    if (selectedToggleIndex.value != index) {
+      selectedToggleIndex.value = index;
+      showBookmarkedOnly.value = index == 1;
+    }
+  }
+
+  List<UserModel> get filteredUsers {
+    if (showBookmarkedOnly.value) {
+      return users.where((user) => isBookmarked(user.userId ?? 0)).toList();
+    }
+    return users;
   }
 
   Future<void> loadUsers({
@@ -88,5 +147,11 @@ class UserPageController extends GetxController {
     String site = 'stackoverflow',
   }) async {
     await loadUsers(refresh: true, order: order, sort: sort, site: site);
+  }
+
+  @override
+  void onClose() {
+    scrollController.dispose();
+    super.onClose();
   }
 }

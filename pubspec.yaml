@@ -55,6 +55,9 @@ dependencies:
     iconify_flutter: ^0.0.7
     google_fonts: ^6.2.1
     flutter_dotenv: ^5.2.1
+    timeago: ^3.2.2
+    get_storage: ^2.1.1
+    toggle_switch: ^2.3.0
 
 dev_dependencies:
     flutter_test:
@@ -79,6 +82,7 @@ flutter:
     assets:
         - assets/icon/
         - assets/images/
+        - assets/animated/
         - .env
 
     # To add assets to your application, add an assets section, like this:

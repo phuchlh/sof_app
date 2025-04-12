@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:sof_app/main_binding.dart';
 import 'package:sof_app/modules/user_page/user_page.dart';
 import 'package:sof_app/route/app_page.dart';
@@ -8,6 +9,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
+
+  await GetStorage.init();
   runApp(const MyApp());
 }
 
