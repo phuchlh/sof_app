@@ -1,15 +1,12 @@
-import 'package:sof_app/models/user_response.dart';
-import 'package:sof_app/models/reputation_response.dart';
-import 'package:sof_app/service/dio_client.dart';
-import 'package:dio/dio.dart';
-import '../models/user_model.dart';
-import '../models/reputation_history_model.dart';
-import '../models/api_response.dart';
+import 'package:sof_app/models/reputation_model.dart';
+
+import '../models/reputation_response.dart';
+import '../models/user_response.dart';
+import 'dio_client.dart';
+import 'package:cached_query/cached_query.dart';
 
 class UserService {
-  final Dio _dioClient;
-
-  UserService({Dio? dioClient}) : _dioClient = dioClient ?? Dio();
+  final _dioClient = DioClient();
 
   Future<UserResponse> getUsers({
     required int page,
@@ -49,7 +46,11 @@ class UserService {
     try {
       final response = await _dioClient.get(
         '/users/$userId/reputation-history',
-        queryParameters: {'page': page, 'pagesize': pageSize},
+        queryParameters: {
+          'page': page,
+          'pagesize': pageSize,
+          'site': 'stackoverflow',
+        },
       );
 
       if (response.statusCode != 200) {

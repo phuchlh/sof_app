@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sof_app/utils/helper.dart';
+
+import '../../utils/helper.dart';
 import 'reputation_history_controller.dart';
 
 class ReputationHistoryPage extends GetView<ReputationHistoryController> {
@@ -31,44 +32,68 @@ class ReputationHistoryPage extends GetView<ReputationHistoryController> {
                     );
                   }
 
-                  final history = reputationHistory[index];
+                  final repu = reputationHistory[index];
+                  final repuType =
+                      (repu.reputationChange ?? 0) > 0
+                          ? "+${repu.reputationChange}"
+                          : (repu.reputationChange ?? 0) < 0
+                          ? "${repu.reputationChange}"
+                          : "0";
                   return Card(
                     margin: const EdgeInsets.symmetric(
                       horizontal: 8.0,
                       vertical: 4.0,
                     ),
                     child: ListTile(
+                      leading:
+                          (repu.reputationChange ?? 0) > 0
+                              ? Icon(Icons.trending_up, color: Colors.green)
+                              : (repu.reputationChange ?? 0) < 0
+                              ? Icon(Icons.trending_down, color: Colors.red)
+                              : Icon(Icons.trending_flat, color: Colors.grey),
                       title: Text(
-                        history.reputationHistoryType ?? 'Unknown',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        '$repuType reputation',
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Reputation Change: ${Helper.formatReputation(history.reputationHistory ?? 0)}',
-                          ),
-                          if (history.creationDate != null)
-                            Text(
-                              'Date: ${Helper.formatDate(history.creationDate!)}',
-                            ),
-                        ],
+                      subtitle: Text(
+                        '${repu.reputationHistoryType} on post ${repu.postId}',
                       ),
                       trailing: Text(
-                        history.reputationHistory != null
-                            ? '${history.reputationHistory! > 0 ? '+' : ''}${history.reputationHistory}'
-                            : '0',
-                        style: TextStyle(
-                          color:
-                              history.reputationHistory != null
-                                  ? history.reputationHistory! > 0
-                                      ? Colors.green
-                                      : Colors.red
-                                  : Colors.grey,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        Helper.timeAgoFromUnix(repu.creationDate ?? 0),
+                        style: TextStyle(fontSize: 12, color: Colors.grey),
                       ),
                     ),
+
+                    // ListTile(
+                    //   title: Text(
+                    //     repu.reputationHistoryType ?? 'Unknown',
+                    //     style: const TextStyle(fontWeight: FontWeight.bold),
+                    //   ),
+                    //   subtitle: Column(
+                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                    //     children: [
+                    //       Text('Reputation Change: ${repu.creationDate}'),
+                    //       if (repu.creationDate != null)
+                    //         Text(
+                    //           'Date: ${Helper.timeAgoFromUnix(repu.creationDate ?? 0)}',
+                    //         ),
+                    //     ],
+                    //   ),
+                    //   trailing: Text(
+                    //     repu.reputationChange != null
+                    //         ? '${repu.reputationChange! > 0 ? '+' : ''}${repu.reputationChange}'
+                    //         : '0',
+                    //     style: TextStyle(
+                    //       color:
+                    //           repu.reputationChange != null
+                    //               ? repu.reputationChange! > 0
+                    //                   ? Colors.green
+                    //                   : Colors.red
+                    //               : Colors.grey,
+                    //       fontWeight: FontWeight.bold,
+                    //     ),
+                    //   ),
+                    // ),
                   );
                 },
               ),

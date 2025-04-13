@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:sof_app/main_binding.dart';
-import 'package:sof_app/modules/user_page/user_page.dart';
-import 'package:sof_app/route/app_page.dart';
-import 'package:sof_app/theme/theme.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+import 'main_binding.dart';
+import 'modules/user_page/user_page.dart';
+import 'route/app_page.dart';
+import 'theme/theme.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
 
+  // WidgetsFlutterBinding.ensureInitialized();
+  // CachedQuery.instance.configFlutter(
+  //   config: QueryConfigFlutter(
+  //     refetchOnResume: true,
+  //     refetchOnConnection: true,
+  //   ),
+  //   storage: await CachedStorage.ensureInitialized(),
+  // );
   await GetStorage.init();
   runApp(const MyApp());
 }

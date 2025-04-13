@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../models/reputation_history_model.dart';
+
+import '../../models/reputation_model.dart';
 import '../../service/user_service.dart';
 
 class ReputationHistoryController extends GetxController {
@@ -8,8 +9,7 @@ class ReputationHistoryController extends GetxController {
   final scrollController = ScrollController();
 
   // Observable variables
-  final RxList<ReputationHistoryModel> reputationHistory =
-      <ReputationHistoryModel>[].obs;
+  final RxList<ReputationModel> reputationHistory = <ReputationModel>[].obs;
   final RxBool isLoading = false.obs;
   final RxBool hasMore = true.obs;
   final RxInt currentPage = 1.obs;
@@ -56,12 +56,9 @@ class ReputationHistoryController extends GetxController {
       );
 
       if (refresh) {
-        reputationHistory.value =
-            response.items?.cast<ReputationHistoryModel>() ?? [];
+        reputationHistory.value = response.items ?? [];
       } else {
-        reputationHistory.addAll(
-          response.items?.cast<ReputationHistoryModel>() ?? [],
-        );
+        reputationHistory.addAll(response.items ?? []);
       }
 
       hasMore.value = response.hasMore ?? false;

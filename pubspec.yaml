@@ -58,6 +58,9 @@ dependencies:
     timeago: ^3.2.2
     get_storage: ^2.1.1
     toggle_switch: ^2.3.0
+    cached_query: ^2.2.1
+    cached_query_flutter: ^2.6.0
+    cached_storage: ^2.0.14
 
 dev_dependencies:
     flutter_test:
