@@ -1,9 +1,6 @@
-import 'package:sof_app/models/reputation_model.dart';
-
 import '../models/reputation_response.dart';
 import '../models/user_response.dart';
 import 'dio_client.dart';
-import 'package:cached_query/cached_query.dart';
 
 class UserService {
   final _dioClient = DioClient();
@@ -14,6 +11,7 @@ class UserService {
     String order = 'desc',
     String sort = 'reputation',
     String site = 'stackoverflow',
+    String inname = '',
   }) async {
     try {
       final response = await _dioClient.get(
@@ -23,6 +21,7 @@ class UserService {
           'pagesize': pageSize,
           'order': order,
           'sort': sort,
+          'inname': inname,
           'site': site,
         },
       );

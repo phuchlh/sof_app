@@ -1,9 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:sof_app/models/user_model.dart';
-import 'package:sof_app/service/user_service.dart';
-import 'package:intl/intl.dart';
+
+import '../../models/user_model.dart';
+import '../../service/user_service.dart';
 
 class UserPageController extends GetxController {
   final UserService _userService = UserService();
@@ -22,12 +24,32 @@ class UserPageController extends GetxController {
   final RxInt selectedToggleIndex = 0.obs;
   final RxBool showBookmarkedOnly = false.obs;
 
+  final TextEditingController searchController = TextEditingController();
+  final RxString searchQuery = ''.obs;
+  Timer? _searchDebounce;
+
   @override
   void onInit() {
     _loadBookmarkedUsers();
     loadUsers();
     scrollController.addListener(_onScroll);
     super.onInit();
+  }
+
+  void filterUsersByName(String query) {
+    searchQuery.value = query;
+
+    _searchDebounce?.cancel();
+
+    if (query.isEmpty) {
+      loadUsers(refresh: true);
+    } else {
+      _searchDebounce = Timer(const Duration(milliseconds: 500), () {
+        if (searchQuery.value == query) {
+          loadUsers(refresh: true, inname: query);
+        }
+      });
+    }
   }
 
   void _onScroll() {
@@ -82,6 +104,7 @@ class UserPageController extends GetxController {
     String order = 'desc',
     String sort = 'reputation',
     String site = 'stackoverflow',
+    String inname = '',
   }) async {
     // If already loading or no more data to load (except for refresh), return
     if (isLoading.value) return;
@@ -102,6 +125,7 @@ class UserPageController extends GetxController {
         order: order,
         sort: sort,
         site: site,
+        inname: inname,
       );
 
       if (refresh) {
@@ -145,13 +169,21 @@ class UserPageController extends GetxController {
     String order = 'desc',
     String sort = 'reputation',
     String site = 'stackoverflow',
+    String inname = '',
   }) async {
-    await loadUsers(refresh: true, order: order, sort: sort, site: site);
+    await loadUsers(
+      refresh: true,
+      order: order,
+      sort: sort,
+      site: site,
+      inname: searchQuery.value,
+    );
   }
 
   @override
   void onClose() {
     scrollController.dispose();
+    _searchDebounce?.cancel();
     super.onClose();
   }
 }

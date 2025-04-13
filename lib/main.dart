@@ -26,7 +26,6 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -35,10 +34,15 @@ class MyApp extends StatelessWidget {
       getPages: AppPages.pages,
       theme: MaterialTheme(TextTheme()).light(),
       initialBinding: MainBinding(),
-      home: Builder(
-        builder: (context) {
-          return Scaffold(body: UserPage());
-        },
+      home: Scaffold(
+        body: Builder(
+          builder: (context) {
+            return Padding(
+              padding: const EdgeInsets.only(top: 36.0),
+              child: UserPage(),
+            );
+          },
+        ),
       ),
     );
   }

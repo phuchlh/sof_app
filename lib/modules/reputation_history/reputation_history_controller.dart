@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../models/reputation_model.dart';
+import '../../models/user_model.dart';
 import '../../service/user_service.dart';
 
 class ReputationHistoryController extends GetxController {
   final UserService _userService = UserService();
   final scrollController = ScrollController();
+  final Rx<UserModel> userModel = UserModel().obs;
 
   // Observable variables
   final RxList<ReputationModel> reputationHistory = <ReputationModel>[].obs;
@@ -26,7 +28,6 @@ class ReputationHistoryController extends GetxController {
     final position = scrollController.position;
     if (position.pixels >= position.maxScrollExtent - 200) {
       if (!isLoading.value && hasMore.value) {
-        print('Loading more reputation history...');
         loadReputationHistory();
       }
     }

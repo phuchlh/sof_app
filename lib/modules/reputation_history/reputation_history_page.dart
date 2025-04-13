@@ -10,7 +10,11 @@ class ReputationHistoryPage extends GetView<ReputationHistoryController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Reputation History')),
+      appBar: AppBar(
+        title: Text(
+          'Reputation History ${controller.userModel.value.displayName}',
+        ),
+      ),
       body: Obx(() {
         final reputationHistory = controller.reputationHistory;
         return reputationHistory.isEmpty && !controller.isLoading.value
