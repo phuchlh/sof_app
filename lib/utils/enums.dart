@@ -1,0 +1,1 @@
+enum ETypeParams { ANSWER, QUESTIONS, COMMENTS }

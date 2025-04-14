@@ -44,7 +44,7 @@ class UserPageController extends GetxController {
     if (query.isEmpty) {
       loadUsers(refresh: true);
     } else {
-      _searchDebounce = Timer(const Duration(milliseconds: 500), () {
+      _searchDebounce = Timer(const Duration(milliseconds: 1000), () {
         if (searchQuery.value == query) {
           loadUsers(refresh: true, inname: query);
         }

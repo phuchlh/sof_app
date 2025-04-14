@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:sof_app/utils/enums.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 import '../../utils/helper.dart';
@@ -122,13 +123,16 @@ class UserPage extends GetView<UserPageController> {
                           final user = filteredUsers[index];
                           return GestureDetector(
                             onTap: () {
-                              final reputationController = Get.put(
-                                ReputationHistoryController(),
+                              final reputationController =
+                                  Get.find<ReputationHistoryController>();
+                              reputationController.userModel.value = user;
+
+                              reputationController.getTopLanguages(
+                                userId: user.userId ?? 0,
                               );
                               reputationController.setSelectedUserId(
                                 user.userId ?? 0,
                               );
-                              reputationController.userModel.value = user;
                               Get.to(() => const ReputationHistoryPage());
                             },
                             child: Card(

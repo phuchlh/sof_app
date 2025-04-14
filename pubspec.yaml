@@ -61,6 +61,8 @@ dependencies:
     cached_query: ^2.2.1
     cached_query_flutter: ^2.6.0
     cached_storage: ^2.0.14
+    cached_network_image: ^3.4.1
+    shimmer: ^3.0.0
 
 dev_dependencies:
     flutter_test:

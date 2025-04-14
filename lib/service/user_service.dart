@@ -1,3 +1,6 @@
+import 'package:sof_app/models/language_response.dart';
+import 'package:sof_app/utils/enums.dart';
+
 import '../models/reputation_response.dart';
 import '../models/user_response.dart';
 import 'dio_client.dart';
@@ -60,6 +63,63 @@ class UserService {
 
       // Parse the response data into ReputationResponse
       return ReputationResponse.fromJson(response.data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<int> getTotal({required int userId, required ETypeParams type}) async {
+    try {
+      String typeString = '';
+      switch (type) {
+        case ETypeParams.ANSWER:
+          typeString = 'answers';
+          break;
+        case ETypeParams.QUESTIONS:
+          typeString = 'questions';
+          break;
+        case ETypeParams.COMMENTS:
+          typeString = 'comments';
+          break;
+      }
+      final response = await _dioClient.get(
+        '/users/$userId/$typeString',
+        queryParameters: {'filter': 'total', 'site': 'stackoverflow'},
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception(
+          'Failed to fetch user reputation: ${response.statusCode}',
+        );
+      }
+
+      // Parse the response data into ReputationResponse
+      return response.data['total'] as int;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<LanguageResponse> getTopLanguages({required int userId}) async {
+    try {
+      final response = await _dioClient.get(
+        '/users/$userId/tags',
+        queryParameters: {
+          'page': 1,
+          'pagesize': 5,
+          'order': 'desc',
+          'sort': 'popular',
+          'site': 'stackoverflow',
+        },
+      );
+
+
+      if (response.statusCode != 200) {
+        throw Exception('Failed to fetch users: ${response.statusCode}');
+      }
+
+      // Parse the response data into UserResponse
+      return LanguageResponse.fromJson(response.data);
     } catch (e) {
       rethrow;
     }

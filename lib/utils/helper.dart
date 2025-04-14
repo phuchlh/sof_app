@@ -9,6 +9,6 @@ class Helper {
 
   static String timeAgoFromUnix(int timestamp, {String locale = 'en'}) {
     final date = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
-    return timeago.format(date, locale: locale);
+    return timeago.format(date, locale: locale, allowFromNow: true);
   }
 }

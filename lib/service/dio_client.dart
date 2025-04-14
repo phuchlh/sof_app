@@ -9,8 +9,8 @@ class DioClient {
 
   DioClient() : _dio = Dio() {
     _dio.options.baseUrl = SOF_API_ENDPOINT; // Replace with your base URL
-    _dio.options.connectTimeout = const Duration(seconds: 10);
-    _dio.options.receiveTimeout = const Duration(seconds: 10);
+    _dio.options.connectTimeout = const Duration(seconds: 60);
+    _dio.options.receiveTimeout = const Duration(seconds: 60);
 
     // Add default headers
     _dio.options.headers = {
@@ -152,4 +152,3 @@ class DioClient {
     }
   }
 }
-
