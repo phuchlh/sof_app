@@ -13,11 +13,11 @@ Future<void> main() async {
 
   // WidgetsFlutterBinding.ensureInitialized();
   // CachedQuery.instance.configFlutter(
+  //   storage: await CachedStorage.ensureInitialized(),
   //   config: QueryConfigFlutter(
   //     refetchOnResume: true,
   //     refetchOnConnection: true,
   //   ),
-  //   storage: await CachedStorage.ensureInitialized(),
   // );
   await GetStorage.init();
   runApp(const MyApp());

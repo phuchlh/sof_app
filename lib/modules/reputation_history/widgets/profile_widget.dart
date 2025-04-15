@@ -34,7 +34,24 @@ class ProfileWidget extends GetView<ReputationHistoryController> {
                 ),
                 child:
                     controller.isStatsLoading.value
-                        ? const Center(child: CircularProgressIndicator())
+                        ? Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  _ShimmerStatItem(),
+                                  _ShimmerStatItem(),
+                                  _ShimmerStatItem(),
+                                  _ShimmerStatItem(),
+                                ],
+                              ),
+                            ],
+                          ),
+                        )
                         : Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -128,7 +145,8 @@ class ProfileWidget extends GetView<ReputationHistoryController> {
                           label: Text(
                             '${lang.name ?? ''} (${lang.count ?? 0})',
                             style: context.textTheme.bodyMedium?.copyWith(
-                              color: context.theme.primaryColor,
+                              color:
+                                  context.theme.colorScheme.onPrimaryContainer,
                             ),
                           ),
                           backgroundColor:
@@ -136,6 +154,11 @@ class ProfileWidget extends GetView<ReputationHistoryController> {
                           padding: const EdgeInsets.symmetric(
                             horizontal: k2,
                             vertical: 0,
+                          ),
+                          shape: const StadiumBorder(
+                            side: BorderSide(
+                              color: Colors.transparent,
+                            ), // <-- no border
                           ),
                         );
                       }).toList(),
@@ -146,5 +169,36 @@ class ProfileWidget extends GetView<ReputationHistoryController> {
         ),
       );
     });
+  }
+}
+
+class _ShimmerStatItem extends StatelessWidget {
+  const _ShimmerStatItem({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Column(
+        children: [
+          Container(
+            width: 40,
+            height: 20,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(4),
+            ),
+          ),
+          const Gap(4),
+          Container(
+            width: 60,
+            height: 16,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(4),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

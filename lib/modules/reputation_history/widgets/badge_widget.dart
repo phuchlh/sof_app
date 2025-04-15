@@ -24,15 +24,31 @@ class BadgeWidget extends GetView<ReputationHistoryController> {
               (index) => Column(
                 children: [
                   Container(
-                    width: 32,
-                    height: 32,
+                    width: k50,
+                    height: k50,
                     decoration: BoxDecoration(
                       color: Colors.grey[300],
                       shape: BoxShape.circle,
                     ),
                   ),
                   Gap(k4),
-                  Container(width: 40, height: 12, color: Colors.grey[300]),
+                  Container(
+                    width: 40,
+                    height: 12,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                  Gap(k2),
+                  Container(
+                    width: 30,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -44,10 +60,10 @@ class BadgeWidget extends GetView<ReputationHistoryController> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           _BadgeItem(
-            count: user.badgeCounts?.bronze ?? 0,
-            color: const Color(0xFFCD7F32), // Bronze color
+            count: user.badgeCounts?.gold ?? 0,
+            color: const Color(0xFFFFD700), // Gold color
             icon: Icons.workspace_premium,
-            label: 'Bronze',
+            label: 'Gold',
           ),
           _BadgeItem(
             count: user.badgeCounts?.silver ?? 0,
@@ -56,10 +72,10 @@ class BadgeWidget extends GetView<ReputationHistoryController> {
             label: 'Silver',
           ),
           _BadgeItem(
-            count: user.badgeCounts?.gold ?? 0,
-            color: const Color(0xFFFFD700), // Gold color
+            count: user.badgeCounts?.bronze ?? 0,
+            color: const Color(0xFFCD7F32), // Bronze color
             icon: Icons.workspace_premium,
-            label: 'Gold',
+            label: 'Bronze',
           ),
         ],
       );
@@ -85,8 +101,8 @@ class _BadgeItem extends StatelessWidget {
     return Column(
       children: [
         Container(
-          width: 32,
-          height: 32,
+          width: k50,
+          height: k50,
           decoration: BoxDecoration(
             color: Colors.white,
             shape: BoxShape.circle,
@@ -113,7 +129,7 @@ class _BadgeItem extends StatelessWidget {
           label,
           style: context.textTheme.bodySmall?.copyWith(
             color: Colors.grey[600],
-            fontSize: 10,
+            fontSize: 12,
           ),
         ),
       ],
