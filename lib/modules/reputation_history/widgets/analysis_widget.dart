@@ -19,18 +19,15 @@ class AnalysisWidget extends GetView<ReputationHistoryController> {
 
       // Sort reputation history by date and calculate cumulative reputation
       final sortedHistory =
-          controller.repuHistoryChart.toList()..sort(
-            (a, b) => (a.creationDate ?? 0).compareTo(b.creationDate ?? 0),
-          );
+          controller.repuHistoryChart.toList()
+            ..sort((a, b) => (a.creationDate ?? 0).compareTo(b.creationDate ?? 0));
 
       int cumulativeReputation = 0;
       final chartData =
           sortedHistory.map((rep) {
             cumulativeReputation += rep.reputationChange ?? 0;
             return _ReputationData(
-              date: DateTime.fromMillisecondsSinceEpoch(
-                (rep.creationDate ?? 0) * 1000,
-              ),
+              date: DateTime.fromMillisecondsSinceEpoch((rep.creationDate ?? 0) * 1000),
               reputation: cumulativeReputation,
             );
           }).toList();
@@ -42,9 +39,7 @@ class AnalysisWidget extends GetView<ReputationHistoryController> {
           children: [
             Text(
               'Reputation History',
-              style: context.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
+              style: context.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
             ),
             Gap(k20),
             SizedBox(
@@ -57,10 +52,7 @@ class AnalysisWidget extends GetView<ReputationHistoryController> {
                   labelStyle: const TextStyle(fontSize: 10),
                   title: AxisTitle(
                     text: 'Date',
-                    textStyle: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    textStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
                   ),
                   labelRotation: 45,
                   minimum: DateTime.now().subtract(const Duration(days: 7)),
@@ -71,10 +63,7 @@ class AnalysisWidget extends GetView<ReputationHistoryController> {
                   title: AxisTitle(
                     alignment: ChartAlignment.center,
                     text: 'Reputation',
-                    textStyle: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    textStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
                   ),
                 ),
                 tooltipBehavior: TooltipBehavior(
@@ -101,10 +90,7 @@ class AnalysisWidget extends GetView<ReputationHistoryController> {
                       ),
                       child: Text(
                         'Date: ${DateFormat('dd/MM/yyyy').format(data.date)}\nReputation: ${data.reputation}',
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                        ),
+                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
                       ),
                     );
                   },
@@ -155,7 +141,7 @@ class AnalysisWidget extends GetView<ReputationHistoryController> {
 
             Gap(k20),
             Text(
-              "Ideally, we should have filter options to select a custom date range.\nHowever, since the StackOverflow API doesn't support this, we're limited to showing data from the last 7 days up to now.",
+              "In an ideal scenario, users would be able to filter reputation history based on a custom date range — allowing them to view data for a specific day, week, month, or any period of their choice.\n Unfortunately, the Stack Overflow API does not offer support for date-range queries. Because of this limitation, we are only able to fetch and display reputation data for the most recent 7 days, up to the current moment.",
               style: context.textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.w400,
                 color: context.theme.colorScheme.onSurface.withAlpha(150),

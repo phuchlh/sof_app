@@ -111,111 +111,119 @@ class UserPage extends GetView<UserPageController> {
                           }
 
                           final user = filteredUsers[index];
-                          final isBookmarked = controller.bookmarkedUserIds.contains(user.userId);
+                          return Obx(() {
+                            final isBookmarked = controller.isBookmarked(user.userId ?? 0);
+                            return GestureDetector(
+                              onTap: () {
+                                final reputationController = Get.find<ReputationHistoryController>();
+                                reputationController.userModel.value = user;
+                                reputationController.isUserBookmarked.value = isBookmarked;
 
-                          return GestureDetector(
-                            onTap: () {
-                              final reputationController = Get.find<ReputationHistoryController>();
-                              reputationController.userModel.value = user;
-                              reputationController.isUserBookmarked.value = isBookmarked;
-
-                              reputationController.getTopLanguages(userId: user.userId ?? 0);
-                              reputationController.setSelectedUserId(user.userId ?? 0);
-                              reputationController.loadReputationForChart(userId: user.userId ?? 0);
-                              Get.to(() => const ReputationHistoryPage());
-                            },
-                            child: Card(
-                              margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                              elevation: 0,
-                              color: Colors.white,
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Text(
-                                                  user.displayName ?? '',
-                                                  style: context.textTheme.bodyLarge?.copyWith(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w500,
+                                reputationController.getTopLanguages(userId: user.userId ?? 0);
+                                reputationController.setSelectedUserId(user.userId ?? 0);
+                                reputationController.loadReputationForChart(userId: user.userId ?? 0);
+                                Get.to(() => const ReputationHistoryPage());
+                              },
+                              child: Card(
+                                margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                                elevation: 0,
+                                color: Colors.white,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: k10),
+                                        child: CircleAvatar(radius: 24, backgroundImage: NetworkImage(user.profileImage ?? '')),
+                                      ),
+                                      Gap(k12),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Text(
+                                                    user.displayName ?? '',
+                                                    style: context.textTheme.bodyLarge?.copyWith(
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.w500,
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                              IconButton(
-                                                icon: Icon(
-                                                  isBookmarked ? Icons.bookmark : Icons.bookmark_border,
-                                                  color:
-                                                      isBookmarked
-                                                          ? context.theme.colorScheme.primaryFixedDim.withAlpha(255)
-                                                          : Colors.grey,
-                                                ),
-
-                                                iconSize: k30,
-                                                onPressed: () => controller.toggleBookmark(user),
-                                                padding: EdgeInsets.zero,
-                                                constraints: const BoxConstraints(),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 4),
-                                          Container(
-                                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                            decoration: BoxDecoration(
-                                              color: Colors.green.withOpacity(0.1),
-                                              borderRadius: BorderRadius.circular(12),
-                                            ),
-                                            child: Wrap(
-                                              crossAxisAlignment: WrapCrossAlignment.center,
-                                              spacing: 4,
-                                              children: [
-                                                const Icon(Icons.access_time_outlined, size: 14, color: Colors.grey),
-                                                Text(
-                                                  Helper.timeAgoFromUnix(user.lastAccessDate ?? 0),
-                                                  style: context.textTheme.labelSmall?.copyWith(color: Colors.grey, fontSize: 12),
+                                                IconButton(
+                                                  icon: Icon(
+                                                    isBookmarked ? Icons.bookmark : Icons.bookmark_border,
+                                                    color:
+                                                        isBookmarked
+                                                            ? context.theme.colorScheme.primaryFixedDim.withAlpha(255)
+                                                            : Colors.grey,
+                                                  ),
+                                                  iconSize: k30,
+                                                  onPressed: () => controller.toggleBookmark(user),
+                                                  padding: EdgeInsets.zero,
+                                                  constraints: const BoxConstraints(),
                                                 ),
                                               ],
                                             ),
-                                          ),
-                                          const SizedBox(height: 12),
-                                          Row(
-                                            children: [
-                                              const Text('Reputation', style: TextStyle(color: Colors.grey, fontSize: 13)),
-                                              const Spacer(),
-                                              Text(
-                                                Helper.formatReputation(user.reputation ?? 0),
-                                                style: const TextStyle(fontSize: 13, color: Colors.black),
+                                            Gap(k4),
+                                            Container(
+                                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                              decoration: BoxDecoration(
+                                                color: Colors.green.withOpacity(0.1),
+                                                borderRadius: BorderRadius.circular(12),
                                               ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 6),
-                                          Row(
-                                            children: [
-                                              const Text('Location', style: TextStyle(color: Colors.grey, fontSize: 13)),
-                                              const Spacer(),
-                                              Text(
-                                                user.location ?? 'Unknown',
-                                                style: const TextStyle(fontSize: 13, color: Colors.black),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  const Icon(Icons.access_time_outlined, size: 14, color: Colors.grey),
+                                                  const SizedBox(width: 4),
+                                                  Text(
+                                                    Helper.timeAgoFromUnix(user.lastAccessDate ?? 0),
+                                                    style: context.textTheme.labelSmall?.copyWith(
+                                                      color: Colors.grey,
+                                                      fontSize: 12,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            ],
-                                          ),
-                                        ],
+                                            ),
+                                            Gap(k8),
+
+                                            Row(
+                                              children: [
+                                                const Text('Reputation', style: TextStyle(color: Colors.grey, fontSize: 13)),
+                                                const Spacer(),
+                                                Text(
+                                                  Helper.formatReputation(user.reputation ?? 0),
+                                                  style: const TextStyle(fontSize: 13, color: Colors.black),
+                                                ),
+                                              ],
+                                            ),
+                                            Gap(k4),
+                                            Row(
+                                              children: [
+                                                const Text('Location', style: TextStyle(color: Colors.grey, fontSize: 13)),
+                                                const Spacer(),
+                                                Text(
+                                                  user.location ?? 'Unknown',
+                                                  style: const TextStyle(fontSize: 13, color: Colors.black),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(width: 12),
-                                    CircleAvatar(radius: 24, backgroundImage: NetworkImage(user.profileImage ?? '')),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
+                            );
+                          });
                         },
                       ),
                     ),

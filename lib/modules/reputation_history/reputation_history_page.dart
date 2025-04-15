@@ -23,7 +23,8 @@ class ReputationHistoryPage extends GetView<ReputationHistoryController> {
             () => IconButton(
               icon: Icon(
                 controller.isUserBookmarked.value ? Icons.bookmark : Icons.bookmark_border,
-                color: controller.isUserBookmarked.value ? context.theme.primaryColor : null,
+                color: controller.isUserBookmarked.value ? context.theme.colorScheme.primaryFixedDim.withAlpha(255) : null,
+                size: k30,
               ),
               onPressed: () => controller.toggleBookmark(controller.userModel.value),
             ),
@@ -107,22 +108,15 @@ class ReputationHistoryPage extends GetView<ReputationHistoryController> {
 }
 
 class _RowText extends StatelessWidget {
-  const _RowText({required this.icon, required this.value, this.size, this.style});
-
   final IconData icon;
+  final double size;
   final String value;
-  final double? size;
   final TextStyle? style;
+
+  const _RowText({required this.icon, required this.size, required this.value, this.style});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        Icon(icon, color: context.theme.iconTheme.color?.withAlpha(150), size: size ?? k16),
-        Gap(k4),
-        Text(value, style: style ?? context.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w400)),
-      ],
-    );
+    return Row(children: [Icon(icon, size: size, color: Colors.grey), Gap(k4), Text(value, style: style)]);
   }
 }

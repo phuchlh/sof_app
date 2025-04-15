@@ -16,10 +16,7 @@ class ReputationWidget extends GetView<ReputationHistoryController> {
 
       if (controller.isReputationLoading.value) {
         return Expanded(
-          child: ListView(
-            padding: const EdgeInsets.only(top: k10),
-            children: List.generate(7, (index) => _ShimmerCard()),
-          ),
+          child: ListView(padding: const EdgeInsets.only(top: k10), children: List.generate(7, (index) => _ShimmerCard())),
         );
       }
 
@@ -46,17 +43,10 @@ class ReputationWidget extends GetView<ReputationHistoryController> {
                 : ListView.builder(
                   padding: const EdgeInsets.only(top: k10),
                   controller: controller.scrollController,
-                  itemCount:
-                      reputationHistory.length +
-                      (controller.hasMore.value ? 1 : 0),
+                  itemCount: reputationHistory.length + (controller.hasMore.value ? 1 : 0),
                   itemBuilder: (context, index) {
                     if (index == reputationHistory.length) {
-                      return const Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(16.0),
-                          child: CircularProgressIndicator(),
-                        ),
-                      );
+                      return const Center(child: Padding(padding: EdgeInsets.all(16.0), child: CircularProgressIndicator()));
                     }
 
                     final repu = reputationHistory[index];
@@ -68,40 +58,22 @@ class ReputationWidget extends GetView<ReputationHistoryController> {
                             : "0";
 
                     return Card(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: k10,
-                        vertical: k8,
-                      ),
+                      margin: const EdgeInsets.symmetric(horizontal: k10, vertical: k8),
                       elevation: 0,
                       child: ListTile(
                         leading:
                             (repu.reputationChange ?? 0) > 0
-                                ? const Icon(
-                                  Icons.trending_up,
-                                  color: Colors.green,
-                                )
+                                ? const Icon(Icons.trending_up, color: Colors.green)
                                 : (repu.reputationChange ?? 0) < 0
-                                ? const Icon(
-                                  Icons.trending_down,
-                                  color: Colors.red,
-                                )
-                                : const Icon(
-                                  Icons.trending_flat,
-                                  color: Colors.grey,
-                                ),
-                        title: Text(
-                          '$repuType reputation',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
+                                ? const Icon(Icons.trending_down, color: Colors.red)
+                                : const Icon(Icons.trending_flat, color: Colors.grey),
+                        title: Text('$repuType reputation', style: const TextStyle(fontWeight: FontWeight.bold)),
                         subtitle: Text(
-                          '${controller.getReadableReputationType(repu.reputationHistoryType ?? '')} on post ${repu.postId}',
+                          '${controller.getReadableReputationType(repu.reputationHistoryType ?? '')} on post #${repu.postId}',
                         ),
                         trailing: Text(
                           Helper.timeAgoFromUnix(repu.creationDate ?? 0),
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey,
-                          ),
+                          style: const TextStyle(fontSize: 12, color: Colors.grey),
                         ),
                       ),
                     );
@@ -121,35 +93,16 @@ class _ShimmerCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: k10, vertical: k8),
       elevation: 0,
       child: ListTile(
-        leading: Container(
-          width: 24,
-          height: 24,
-          decoration: BoxDecoration(
-            color: Colors.grey[300],
-            shape: BoxShape.circle,
-          ),
-        ),
-        title: Container(
-          height: 16,
-          decoration: BoxDecoration(
-            color: Colors.grey[300],
-            borderRadius: BorderRadius.circular(4),
-          ),
-        ),
+        leading: Container(width: 24, height: 24, decoration: BoxDecoration(color: Colors.grey[300], shape: BoxShape.circle)),
+        title: Container(height: 16, decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(4))),
         subtitle: Container(
           height: 14,
-          decoration: BoxDecoration(
-            color: Colors.grey[300],
-            borderRadius: BorderRadius.circular(4),
-          ),
+          decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(4)),
         ),
         trailing: Container(
           width: 60,
           height: 14,
-          decoration: BoxDecoration(
-            color: Colors.grey[300],
-            borderRadius: BorderRadius.circular(4),
-          ),
+          decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(4)),
         ),
       ),
     );

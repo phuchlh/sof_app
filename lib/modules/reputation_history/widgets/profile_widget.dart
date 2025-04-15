@@ -23,10 +23,7 @@ class ProfileWidget extends GetView<ReputationHistoryController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 16.0,
-                  horizontal: 20.0,
-                ),
+                padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey.shade300),
                   borderRadius: BorderRadius.circular(8.0),
@@ -40,14 +37,8 @@ class ProfileWidget extends GetView<ReputationHistoryController> {
                           child: Column(
                             children: [
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  _ShimmerStatItem(),
-                                  _ShimmerStatItem(),
-                                  _ShimmerStatItem(),
-                                  _ShimmerStatItem(),
-                                ],
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [_ShimmerStatItem(), _ShimmerStatItem(), _ShimmerStatItem(), _ShimmerStatItem()],
                               ),
                             ],
                           ),
@@ -55,49 +46,19 @@ class ProfileWidget extends GetView<ReputationHistoryController> {
                         : Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            StatItem(
-                              value: Helper.formatReputation(
-                                user.reputation ?? 0,
-                              ),
-                              label: 'reputation',
-                            ),
-                            StatItem(
-                              value: Helper.formatReputation(
-                                controller.totalAnswer.value,
-                              ),
-                              label: 'answers',
-                            ),
-                            StatItem(
-                              value: Helper.formatReputation(
-                                controller.totalQuestion.value,
-                              ),
-                              label: 'questions',
-                            ),
-                            StatItem(
-                              value: Helper.formatReputation(
-                                controller.totalComment.value,
-                              ),
-                              label: 'comments',
-                            ),
+                            StatItem(value: Helper.formatReputation(user.reputation ?? 0), label: 'reputation'),
+                            StatItem(value: Helper.formatReputation(controller.totalAnswer.value), label: 'answers'),
+                            StatItem(value: Helper.formatReputation(controller.totalQuestion.value), label: 'questions'),
+                            StatItem(value: Helper.formatReputation(controller.totalComment.value), label: 'comments'),
                           ],
                         ),
               ), // Badges
               Gap(k20),
-              Text(
-                'Badges',
-                style: context.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+              Text('Badges', style: context.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
               Gap(k8),
               BadgeWidget(user: user),
               Gap(k20),
-              Text(
-                'Languages',
-                style: context.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+              Text('Languages', style: context.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
               Gap(k8),
               Obx(() {
                 if (controller.isGetLanguages.value) {
@@ -110,20 +71,9 @@ class ProfileWidget extends GetView<ReputationHistoryController> {
                         baseColor: Colors.grey[300]!,
                         highlightColor: Colors.grey[100]!,
                         child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: k12,
-                            vertical: k6,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            '█████████',
-                            style: context.textTheme.bodyMedium?.copyWith(
-                              color: Colors.transparent,
-                            ),
-                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: k12, vertical: k6),
+                          decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(20)),
+                          child: Text('█████████', style: context.textTheme.bodyMedium?.copyWith(color: Colors.transparent)),
                         ),
                       ),
                     ),
@@ -131,34 +81,23 @@ class ProfileWidget extends GetView<ReputationHistoryController> {
                 }
 
                 if (controller.languageModel.isEmpty) {
-                  return const Center(
-                    child: Text('This user has no active languages'),
-                  );
+                  return const Center(child: Text('This user has no active languages'));
                 }
 
                 return Wrap(
-                  spacing: k4,
+                  spacing: k10,
                   runSpacing: k2,
                   children:
                       controller.languageModel.map((lang) {
                         return Chip(
                           label: Text(
                             '${lang.name ?? ''} (${lang.count ?? 0})',
-                            style: context.textTheme.bodyMedium?.copyWith(
-                              color:
-                                  context.theme.colorScheme.onPrimaryContainer,
-                            ),
+                            style: context.textTheme.bodyMedium?.copyWith(color: context.theme.colorScheme.onPrimaryContainer),
                           ),
-                          backgroundColor:
-                              context.theme.colorScheme.primaryContainer,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: k2,
-                            vertical: 0,
-                          ),
+                          backgroundColor: context.theme.colorScheme.primaryContainer,
+                          padding: const EdgeInsets.symmetric(horizontal: k2, vertical: 0),
                           shape: const StadiumBorder(
-                            side: BorderSide(
-                              color: Colors.transparent,
-                            ), // <-- no border
+                            side: BorderSide(color: Colors.transparent), // <-- no border
                           ),
                         );
                       }).toList(),
@@ -183,19 +122,13 @@ class _ShimmerStatItem extends StatelessWidget {
           Container(
             width: 40,
             height: 20,
-            decoration: BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: BorderRadius.circular(4),
-            ),
+            decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(4)),
           ),
           const Gap(4),
           Container(
             width: 60,
             height: 16,
-            decoration: BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: BorderRadius.circular(4),
-            ),
+            decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(4)),
           ),
         ],
       ),
